@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team4215.robot.Robot.RobotPositions;
+import org.usfirst.frc.team4215.robot.Robot.TeamColor;
 import org.usfirst.frc.team4215.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4215.robot.subsystems.AnalogUltrasonic;
 import org.usfirst.frc.team4215.robot.subsystems.ExampleSubsystem;
@@ -28,8 +31,29 @@ public class Robot extends TimedRobot {
 			= new ExampleSubsystem();
 	public static OI m_oi;
 	public static final AnalogUltrasonic ultrasonic = new AnalogUltrasonic();
+	
+	enum RobotPositions {
+		Left,
+		Right,
+		Middle,
+	}
+	
+	enum TeamColor {
+		Red,
+		Blue,
+	}
+	
+	
+	
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	
+	RobotPositions robotPos;
+	SendableChooser<RobotPositions> posChooser = new SendableChooser<>();
+	
+	TeamColor robotTeam;
+	SendableChooser<TeamColor> teamChooser = new SendableChooser<>();
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -38,6 +62,16 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
+		
+		posChooser.addDefault("Middle", RobotPositions.Middle);
+		posChooser.addObject("Left", RobotPositions.Left);
+		posChooser.addObject("Right", RobotPositions.Right);
+		
+		teamChooser.addObject("Red", TeamColor.Red);
+		teamChooser.addObject("Blue", TeamColor.Blue);
+		
+		
+		
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
@@ -76,6 +110,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		m_autonomousCommand = m_chooser.getSelected();
+		
+		robotPos = posChooser.getSelected();
+		robotTeam = teamChooser.getSelected();
+		
+		System.out.println("Robot Position: " + robotPos);
+		System.out.println("Robot Team: " + robotTeam);
+
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
