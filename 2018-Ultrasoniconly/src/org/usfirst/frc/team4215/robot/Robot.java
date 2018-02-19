@@ -54,6 +54,8 @@ public class Robot extends TimedRobot {
 	TeamColor robotTeam;
 	SendableChooser<TeamColor> teamChooser = new SendableChooser<>();
 	
+	SendableChooser<String> testChooser = new SendableChooser<>();
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -70,11 +72,17 @@ public class Robot extends TimedRobot {
 		teamChooser.addObject("Red", TeamColor.Red);
 		teamChooser.addObject("Blue", TeamColor.Blue);
 		
+		testChooser.addDefault("Default option", "Default");
+		testChooser.addObject("Another option", "This is another option");
+		
 		
 		
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+		SmartDashboard.putData("Robot position", posChooser);
+		SmartDashboard.putData("Team color", teamChooser);
+		SmartDashboard.putData("Test chooser thing", testChooser);
 	}
 	public void robotPeriodic() {
 		ultrasonic.ultrasonicRead();
